@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-class MainController extends Controller
+class AuthCR extends Controller
 {
     public function login(Request $req)
     {
 
         $req->request->add([
             'grant_type' => 'password',
-            'client_id' => 2,
-            'client_secret' => env('PASSPORT_GRANT'),
+            'client_id' => env('PASSPORT_GRANT_ID'),
+            'client_secret' => env('PASSPORT_GRANT_TOKEN'),
             'username' => $req->email,
             'password' => $req->password,
             'scope' => '*',
