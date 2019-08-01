@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 
-class AuthCR extends Controller
+class ApiAuthCR extends Controller
 {
     public function login(Request $req)
     {
@@ -35,9 +35,14 @@ class AuthCR extends Controller
 
 
         if ($code === 200) {
-            Auth::attempt($req->all());
-            return redirect('/');
-        } else if ($code === 400) $error = "Invalid request. Please enter a email or password!";
+
+
+            // Auth::attempt($req->all());
+            return response()->json($response->getBody(), 200);
+
+            //
+        } //
+        else if ($code === 400) $error = "Invalid request. Please enter a email or password!";
         else if ($code === 401) $error = "Your credentials are incorrect!";
         else $error = "Something went wrong";
 
@@ -58,22 +63,25 @@ class AuthCR extends Controller
             'password' => bcrypt($req->password)
         ]);
 
-        Auth::attempt([
-            'email' => $req->email,
-            'password' => $req->password
-        ]);
+        if ($user) return response()->json(['message' => 'success'], 200);
+        else return response()->json(['message' => 'success'], 400);
+
+        // Auth::attempt([
+        //     'email' => $req->email,
+        //     'password' => $req->password
+        // ]);
 
         return redirect('/');
     }
 
     public function logout()
     {
-        Auth::logout();
+        // Auth::logout();
 
         auth()->user()->tokens->each(function ($token) {
             $token->delete();
         });
 
-        return redirect('/');
+        return response()->json(['message' => 'success'], 200);
     }
 }
