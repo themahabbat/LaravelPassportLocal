@@ -46,7 +46,8 @@ class ApiAuthCR extends Controller
         else if ($code === 401) $error = "Your credentials are incorrect!";
         else $error = "Something went wrong";
 
-        if ($error) return redirect()->back()->withErrors(['error' => $error]);
+        // if ($error) return redirect()->back()->withErrors(['error' => $error]);
+        if ($error) return response()->json(['error' => $error], 400);
     }
 
     public function register(Request $req)
